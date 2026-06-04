@@ -1,0 +1,1799 @@
+/* ============================================================
+   App-level layout · Occult Noir Bureau
+   ============================================================ */
+
+.app { display: flex; flex-direction: column; min-height: 100vh; }
+
+/* ============================================================
+   TOPBAR
+   - Gas-lamp top edge (glow line)
+   - Brass-style accent strip
+   - Brand monogram with diamond + sunburst echo
+   ============================================================ */
+
+.topbar {
+  position: sticky; top: 0; z-index: 2000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--s-3) var(--s-5);
+  background:
+    linear-gradient(180deg,
+      rgba(0,5,51,0.97) 0%,
+      rgba(30,33,64,0.95) 100%);
+  border-bottom: 1px solid var(--c-twilight);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 1px 0 rgba(158,164,217,0.06),
+              0 14px 40px -20px rgba(0,2,31,1);
+}
+/* The thin gilt rail beneath the topbar — the brass strip under a marquee. */
+.topbar::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: -2px;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--c-gilt-dim) 15%,
+    var(--c-gilt) 50%,
+    var(--c-gilt-dim) 85%,
+    transparent 100%);
+  opacity: 0.5;
+}
+
+.brand {
+  display: flex; align-items: center; gap: var(--s-3);
+  background: transparent; border: none; padding: 0;
+  color: var(--c-ghost); cursor: pointer;
+}
+.brand-mark {
+  width: 40px; height: 40px;
+  position: relative;
+  display: grid; place-items: center;
+  transition: transform 0.6s var(--ease);
+}
+.brand-mark svg { width: 100%; height: 100%; }
+.brand:hover .brand-mark { transform: rotate(180deg); }
+.brand h1 { font-family: var(--f-display); }
+.brand-sub {
+  display: block;
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: 0.74rem;
+  letter-spacing: 0.18em;
+  color: var(--c-gilt-dim);
+  margin-top: 2px;
+  text-transform: none;
+}
+
+/* ============================================================
+   NAVIGATION
+   - Hover dropdown anchored to the LEFT of the button
+   - Pillar-style underline + serif lettering
+   ============================================================ */
+
+.nav { display: flex; gap: var(--s-2); }
+
+.nav-item { position: relative; }
+
+.nav-button {
+  background: transparent;
+  border: none;
+  color: var(--c-ash);
+  padding: var(--s-2) var(--s-3);
+  font-family: var(--f-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  position: relative;
+  transition: color 0.3s var(--ease);
+  display: inline-block;
+}
+.nav-button::after {
+  /* the "drawn underscore" reveal */
+  content: '';
+  position: absolute; left: 50%; bottom: 4px;
+  height: 1px; width: 0;
+  background: var(--c-gilt);
+  transition: width 0.35s var(--ease), left 0.35s var(--ease);
+}
+.nav-item:hover .nav-button,
+.nav-item.active .nav-button {
+  color: var(--c-ghost);
+}
+.nav-item:hover .nav-button::after,
+.nav-item.active .nav-button::after {
+  width: calc(100% - 24px); left: 12px;
+}
+
+/* Dropdown directly below the button, left-aligned to it (not centered). */
+.nav-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 240px;
+  background: var(--c-panel);
+  border: 1px solid var(--c-twilight);
+  padding: var(--s-2) 0;
+  opacity: 0; pointer-events: none;
+  z-index: 5000;
+  box-shadow: var(--glow-moon);
+}
+.nav-dropdown::before {
+  /* ornate gilt rail across the top */
+  content: '';
+  position: absolute; top: -1px; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--c-gilt) 50%, transparent);
+}
+.nav-item:hover .nav-dropdown,
+.nav-item:focus-within .nav-dropdown {
+  opacity: 1;
+  pointer-events: auto;
+  animation: dropdownDrop 0.25s var(--ease-out) both;
+}
+.nav-dropdown a {
+  display: flex; align-items: center; gap: var(--s-2);
+  padding: var(--s-2) var(--s-4);
+  color: var(--c-ash);
+  font-family: var(--f-serif);
+  font-size: 0.94rem;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  border-bottom: 1px solid transparent;
+  border-left: 2px solid transparent;
+  transition: all 0.2s var(--ease);
+}
+.nav-dropdown a::before {
+  content: '✦';
+  font-style: normal;
+  color: var(--c-gilt-dim);
+  font-size: 0.7rem;
+  transition: color 0.2s var(--ease);
+}
+.nav-dropdown a:hover {
+  color: var(--c-ghost);
+  border-left-color: var(--c-gilt);
+  background: linear-gradient(90deg,
+    rgba(158,164,217,0.05),
+    transparent);
+}
+.nav-dropdown a:hover::before { color: var(--c-gilt); }
+
+/* ============================================================
+   CONTENT SHELL
+   ============================================================ */
+
+.content {
+  flex: 1; width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--s-6) var(--s-5);
+}
+
+.footer {
+  border-top: 1px solid var(--c-twilight);
+  padding: var(--s-4) var(--s-5);
+  text-align: center;
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: 0.86rem;
+  color: var(--c-twilight);
+  letter-spacing: 0.08em;
+  position: relative;
+}
+.footer::before {
+  content: '✦   ✦   ✦';
+  display: block;
+  letter-spacing: 1.2em;
+  color: var(--c-gilt-dim);
+  margin-bottom: var(--s-2);
+  font-size: 0.6rem;
+}
+
+/* ============================================================
+   SECTIONS — case-file style
+   - Ornamental rule with center diamond
+   - Roman numeral marker
+   ============================================================ */
+
+.section {
+  margin-bottom: var(--s-7);
+  scroll-margin-top: 120px;
+}
+.section-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: var(--s-3);
+  margin-bottom: var(--s-4);
+  padding-bottom: var(--s-3);
+  position: relative;
+}
+.section-head::after {
+  /* the engraved divider beneath every section title */
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    var(--c-twilight) 0%,
+    var(--c-gilt-dim) 20%,
+    var(--c-gilt) 50%,
+    var(--c-gilt-dim) 80%,
+    var(--c-twilight) 100%);
+  opacity: 0.45;
+}
+.section-head .title-block { display: flex; align-items: baseline; gap: var(--s-3); }
+.section-head .numeral {
+  font-family: var(--f-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  color: var(--c-gilt);
+  min-width: 2.2rem;
+}
+.section-head .sub {
+  display: block;
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--c-twilight);
+  text-transform: none;
+  margin-top: var(--s-1);
+  max-width: 60ch;
+}
+
+/* ============================================================
+   CARD — ledger / case-file aesthetic
+   - Double rule: outer thin, inner thinner-and-spaced
+   - Brass corner glyphs (top-left, bottom-right)
+   - Subtle inner shadow to suggest aged paper
+   ============================================================ */
+
+.card {
+  background:
+    linear-gradient(180deg,
+      var(--c-panel-2) 0%,
+      var(--c-panel) 100%);
+  border: 1px solid var(--c-twilight);
+  padding: var(--s-5);
+  position: relative;
+  box-shadow:
+    inset 0 0 0 1px rgba(158,164,217,0.04),
+    inset 0 1px 0 rgba(158,164,217,0.08),
+    0 12px 40px -20px rgba(0,2,31,0.9);
+}
+/* The inner rule */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid var(--c-rule);
+  pointer-events: none;
+}
+/* Brass top-left and bottom-right glyphs */
+.card > .gilt-tl,
+.card > .gilt-br {
+  position: absolute; width: 22px; height: 22px;
+  pointer-events: none;
+  color: var(--c-gilt);
+  opacity: 0.65;
+}
+.card > .gilt-tl { top: -1px; left: -1px; }
+.card > .gilt-br { bottom: -1px; right: -1px; transform: rotate(180deg); }
+
+/* ============================================================
+   GRID
+   ============================================================ */
+
+.grid { display: grid; gap: var(--s-4); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+.grid-5 { grid-template-columns: repeat(5, minmax(0,1fr)); }
+@media (max-width: 900px) {
+  .grid-3, .grid-2, .grid-5 { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   TILES — like brass plaques on a hotel reception desk
+   ============================================================ */
+
+.tile {
+  position: relative;
+  padding: var(--s-4) var(--s-4) var(--s-5);
+  background:
+    linear-gradient(180deg,
+      var(--c-panel-2) 0%,
+      var(--c-panel) 100%);
+  border: 1px solid var(--c-twilight);
+  overflow: hidden;
+  transition: transform 0.4s var(--ease-out),
+              border-color 0.4s var(--ease),
+              box-shadow 0.4s var(--ease);
+}
+.tile:hover {
+  transform: translateY(-3px);
+  border-color: var(--c-gilt-dim);
+  box-shadow: var(--glow-moon);
+}
+.tile::before {
+  /* engraved top edge */
+  content: '';
+  position: absolute; top: 0; left: 12%; right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--c-gilt) 50%, transparent);
+  opacity: 0.7;
+}
+.tile .label {
+  font-family: var(--f-display);
+  color: var(--c-gilt-dim);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: var(--s-3);
+}
+.tile .value {
+  font-family: var(--f-display);
+  font-weight: 400;
+  font-size: 3rem;
+  color: var(--c-ghost);
+  letter-spacing: 0.05em;
+  line-height: 1;
+  text-shadow: 0 0 30px rgba(158,164,217,0.25);
+}
+.tile.op   .value { color: var(--c-blood); text-shadow: 0 0 30px rgba(107,31,42,0.4); }
+.tile.up   .value { color: var(--c-moonlight); }
+.tile.bal  .value { color: var(--c-ash); }
+
+/* ============================================================
+   BUTTONS — etched brass plaques
+   ============================================================ */
+
+.btn {
+  font-family: var(--f-display);
+  font-size: 0.74rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--c-ghost);
+  background: transparent;
+  border: 1px solid var(--c-gilt-dim);
+  padding: var(--s-3) var(--s-4);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s var(--ease);
+}
+.btn::before {
+  content: '';
+  position: absolute; inset: 3px;
+  border: 1px solid rgba(158,164,217,0.12);
+  pointer-events: none;
+}
+.btn::after {
+  /* sweep highlight on hover */
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(110deg,
+    transparent 30%,
+    rgba(158,164,217,0.16) 50%,
+    transparent 70%);
+  transform: translateX(-110%);
+  transition: transform 0.6s var(--ease);
+}
+.btn:hover:not(:disabled) {
+  color: var(--c-gilt);
+  border-color: var(--c-gilt);
+  text-shadow: 0 0 12px rgba(158,164,217,0.4);
+}
+.btn:hover:not(:disabled)::after { transform: translateX(110%); }
+.btn:disabled { opacity: 0.5; cursor: wait; }
+
+.btn.secondary {
+  border-color: var(--c-twilight);
+  color: var(--c-ash);
+}
+.btn.secondary:hover:not(:disabled) {
+  border-color: var(--c-moonlight);
+  color: var(--c-ghost);
+}
+
+.btn.refresh.spinning { padding-right: 3rem; }
+.btn.refresh.spinning::before {
+  content: '';
+  position: absolute;
+  top: 50%; right: var(--s-3);
+  width: 10px; height: 10px;
+  border: 1px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+  transform: translateY(-50%);
+}
+
+/* ============================================================
+   TOOLBAR
+   ============================================================ */
+
+.toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: var(--s-4);
+  gap: var(--s-3);
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   FORMS
+   ============================================================ */
+
+select, input {
+  background: var(--c-panel);
+  color: var(--c-ghost);
+  border: 1px solid var(--c-twilight);
+  padding: var(--s-2) var(--s-3);
+  font: inherit;
+  font-family: var(--f-serif);
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  transition: border-color 0.25s var(--ease);
+}
+select:focus, input:focus {
+  outline: none;
+  border-color: var(--c-gilt);
+  box-shadow: 0 0 0 1px var(--c-gilt-dim);
+}
+
+/* ============================================================
+   TABLE — newspaper / ledger
+   ============================================================ */
+
+table { width: 100%; border-collapse: collapse; font-size: 0.96rem; }
+th, td { padding: var(--s-2) var(--s-3); text-align: left; }
+th {
+  font-family: var(--f-display);
+  font-weight: 500;
+  color: var(--c-gilt-dim);
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--c-gilt-dim);
+}
+td {
+  border-bottom: 1px solid var(--c-rule);
+  color: var(--c-ash);
+}
+tbody tr { transition: background-color 0.2s var(--ease); }
+tbody tr:hover td { background: rgba(158,164,217,0.04); color: var(--c-ghost); }
+
+/* ============================================================
+   VERDICT PILL — stamp / wax-seal feel
+   ============================================================ */
+
+.verdict-pill {
+  display: inline-block;
+  padding: var(--s-1) var(--s-3);
+  border: 1px solid currentColor;
+  font-family: var(--f-display);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  position: relative;
+}
+.verdict-pill::before, .verdict-pill::after {
+  content: ''; position: absolute;
+  top: 50%; width: 4px; height: 4px;
+  border: 1px solid currentColor;
+  transform: translateY(-50%) rotate(45deg);
+}
+.verdict-pill::before { left: -8px; }
+.verdict-pill::after  { right: -8px; }
+.verdict-pill.overpowered  { color: var(--c-blood); }
+.verdict-pill.underpowered { color: var(--c-moonlight); }
+.verdict-pill.balanced     { color: var(--c-twilight); }
+
+/* ============================================================
+   ERROR BANNER — telegram / case-stamp
+   ============================================================ */
+
+.error {
+  background: rgba(107,31,42,0.18);
+  color: var(--c-ghost);
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--c-blood);
+  margin-bottom: var(--s-4);
+  font-family: var(--f-serif);
+  font-style: italic;
+  letter-spacing: 0.02em;
+  position: relative;
+}
+.error::before {
+  content: 'NOTICE';
+  position: absolute; top: -0.6rem; left: var(--s-3);
+  background: var(--c-ink);
+  padding: 0 var(--s-2);
+  font-family: var(--f-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  color: var(--c-blood);
+}
+
+/* ============================================================
+   TIER LIST — chapter-marker aesthetic
+   ============================================================ */
+
+.tier-row {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  gap: var(--s-3);
+  margin-bottom: var(--s-2);
+}
+.tier-letter {
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--f-display);
+  font-style: italic;
+  font-size: 2.4rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--c-twilight);
+  background:
+    radial-gradient(circle at 50% 30%,
+      rgba(158,164,217,0.06) 0%, transparent 70%),
+    linear-gradient(180deg, var(--c-panel-2), var(--c-panel));
+  position: relative;
+}
+.tier-letter::after {
+  content: ''; position: absolute; inset: 4px;
+  border: 1px solid var(--c-rule);
+}
+.tier-letter.S { color: var(--c-gilt);        border-color: var(--c-gilt-dim); text-shadow: 0 0 18px rgba(158,164,217,0.5); }
+.tier-letter.A { color: var(--c-moonlight); }
+.tier-letter.B { color: var(--c-ash); }
+.tier-letter.C { color: var(--c-twilight); }
+.tier-letter.D { color: #3A3D5C; }
+
+.tier-items {
+  display: flex; flex-wrap: wrap; gap: var(--s-1);
+  align-content: center;
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--c-twilight);
+  background: var(--c-panel);
+}
+.tier-chip {
+  font-family: var(--f-serif);
+  font-size: 0.92rem;
+  padding: 2px var(--s-2);
+  border: 1px solid var(--c-rule);
+  color: var(--c-ash);
+  background: rgba(158,164,217,0.025);
+  letter-spacing: 0.02em;
+  transition: all 0.2s var(--ease);
+}
+.tier-chip:hover {
+  color: var(--c-gilt);
+  border-color: var(--c-gilt-dim);
+  background: rgba(158,164,217,0.06);
+}
+
+/* ============================================================
+   SIMULATOR — phase timeline
+   ============================================================ */
+
+.timeline { display: grid; gap: var(--s-4); }
+.phase-card {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: var(--s-4);
+  padding: var(--s-4) var(--s-5);
+  background:
+    linear-gradient(180deg, var(--c-panel-2), var(--c-panel));
+  border: 1px solid var(--c-twilight);
+  opacity: 0;
+  animation: fadeUp 0.6s var(--ease-out) both;
+  position: relative;
+}
+.phase-card::before {
+  /* engraved column rule between label and body */
+  content: '';
+  position: absolute;
+  left: 174px; top: var(--s-3); bottom: var(--s-3);
+  width: 1px;
+  background: linear-gradient(180deg,
+    transparent, var(--c-gilt-dim) 20%, var(--c-gilt-dim) 80%, transparent);
+}
+.phase-card.delay-1 { animation-delay: 0.15s; }
+.phase-card.delay-2 { animation-delay: 0.45s; }
+.phase-card.delay-3 { animation-delay: 0.75s; }
+
+.phase-card .phase-label {
+  display: flex; flex-direction: column;
+  gap: var(--s-1);
+  padding-right: var(--s-3);
+}
+.phase-card .phase-name {
+  font-family: var(--f-display);
+  font-style: italic;
+  font-size: 1.2rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-gilt);
+}
+.phase-card .phase-time {
+  font-family: var(--f-mono);
+  color: var(--c-twilight);
+  font-size: 0.86rem;
+}
+.phase-card .phase-bar {
+  height: 2px;
+  background: var(--c-twilight);
+  margin-top: var(--s-2);
+  position: relative;
+}
+.phase-card .phase-bar > span {
+  position: absolute;
+  top: -3px;
+  height: 8px;
+  background: var(--c-moonlight);
+  box-shadow: 0 0 12px rgba(158,164,217,0.5);
+}
+.phase-card .phase-headline {
+  font-family: var(--f-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+  color: var(--c-ghost);
+  margin-bottom: var(--s-3);
+}
+.phase-card .phase-events {
+  list-style: none; padding: 0; margin: 0;
+}
+.phase-card .phase-events li {
+  position: relative;
+  padding-left: var(--s-4);
+  margin-bottom: var(--s-2);
+  font-family: var(--f-serif);
+  font-size: 1rem;
+  color: var(--c-ash);
+  line-height: 1.6;
+}
+.phase-card .phase-events li::before {
+  content: '✦';
+  position: absolute; left: 0; top: 0.05em;
+  color: var(--c-gilt-dim);
+  font-size: 0.7rem;
+}
+
+/* ============================================================
+   HERO / ITEM PICKER
+   ============================================================ */
+
+.picker-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: var(--s-1);
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: var(--s-1);
+}
+.picker-grid button {
+  text-align: left;
+  padding: var(--s-2) var(--s-3);
+  font-family: var(--f-serif);
+  font-size: 0.98rem;
+  letter-spacing: 0.02em;
+  color: var(--c-ash);
+  background: rgba(158,164,217,0.02);
+  border: 1px solid var(--c-rule);
+  transition: all 0.2s var(--ease);
+}
+.picker-grid button:hover {
+  color: var(--c-gilt);
+  border-color: var(--c-gilt-dim);
+  background: rgba(158,164,217,0.05);
+}
+.picker-grid button.active {
+  background: var(--c-moonlight);
+  color: var(--c-ink);
+  border-color: var(--c-moonlight);
+  font-weight: 600;
+}
+.picker-grid::-webkit-scrollbar { width: 8px; }
+.picker-grid::-webkit-scrollbar-track { background: var(--c-ink); }
+.picker-grid::-webkit-scrollbar-thumb { background: var(--c-twilight); }
+
+/* ============================================================
+   RECOMMENDATION CARD — full case file
+   ============================================================ */
+
+.rec-card {
+  background: linear-gradient(180deg, var(--c-panel-2), var(--c-panel));
+  border: 1px solid var(--c-twilight);
+  padding: var(--s-5);
+  display: grid; gap: var(--s-3);
+  position: relative;
+}
+.rec-card::before {
+  content: ''; position: absolute; inset: 6px;
+  border: 1px solid var(--c-rule);
+  pointer-events: none;
+}
+.rec-head {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: var(--s-3);
+}
+.rec-head .name {
+  font-family: var(--f-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.12em;
+  color: var(--c-ghost);
+  text-shadow: 0 0 22px rgba(158,164,217,0.2);
+}
+.rec-meta {
+  display: flex; gap: var(--s-4); flex-wrap: wrap;
+  font-family: var(--f-serif); font-style: italic;
+  font-size: 0.94rem;
+  color: var(--c-twilight);
+  padding: var(--s-2) 0;
+  border-top: 1px dashed var(--c-rule);
+  border-bottom: 1px dashed var(--c-rule);
+}
+.rec-meta b {
+  font-family: var(--f-mono);
+  font-style: normal;
+  color: var(--c-ghost);
+  font-weight: 400;
+}
+.rec-section {
+  border-left: 2px solid var(--c-gilt-dim);
+  padding-left: var(--s-4);
+}
+.rec-section .heading {
+  font-family: var(--f-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--c-gilt);
+  margin-bottom: var(--s-1);
+}
+.rec-section p {
+  color: var(--c-ash);
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+.rec-section.action {
+  border-left-color: var(--c-moonlight);
+}
+.rec-section.action p {
+  color: var(--c-ghost);
+  font-style: italic;
+}
+
+/* ============================================================
+   DISPATCH banner — diagnostic notice from /refresh
+   Telegram-style: case-stamp header, monospace body, separated
+   notices list. Three variants: info (gilt), warning (amber-blood),
+   error (blood-red).
+   ============================================================ */
+
+.dispatch {
+  position: relative;
+  margin-bottom: var(--s-5);
+  padding: var(--s-4) var(--s-4) var(--s-3);
+  background: var(--c-panel);
+  border: 1px solid var(--c-twilight);
+  border-left: 3px solid var(--c-gilt);
+}
+.dispatch.warning { border-left-color: var(--c-warning, #C2A6F0); }
+.dispatch.error   { border-left-color: var(--c-blood); }
+
+.dispatch::after {
+  /* gilt rule along the top edge */
+  content: '';
+  position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--c-gilt-dim) 40%, var(--c-gilt-dim) 60%, transparent);
+  opacity: 0.6;
+}
+
+.dispatch-head {
+  font-family: var(--f-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.4em;
+  color: var(--c-gilt);
+  margin-bottom: var(--s-2);
+}
+.dispatch.warning .dispatch-head { color: var(--c-warning, #C2A6F0); }
+.dispatch.error .dispatch-head   { color: var(--c-blood); }
+
+.dispatch-body {
+  font-family: var(--f-mono);
+  font-size: 0.88rem;
+  color: var(--c-ghost);
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+}
+
+.dispatch-notices {
+  margin: var(--s-3) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px dashed var(--c-rule);
+}
+.dispatch-notices li {
+  padding: var(--s-2) 0 var(--s-2) var(--s-3);
+  font-family: var(--f-serif);
+  font-style: italic;
+  color: var(--c-ash);
+  font-size: 0.95rem;
+  border-bottom: 1px dashed var(--c-rule);
+  position: relative;
+}
+.dispatch-notices li:last-child { border-bottom: none; }
+.dispatch-notices li::before {
+  content: '⚠';
+  position: absolute; left: 0; top: var(--s-2);
+  color: var(--c-warning, #C2A6F0);
+  font-style: normal;
+}
+
+
+/* For the last nav item, right-align the dropdown so it doesn't overflow off
+   the right edge of the viewport. */
+.nav .nav-item:last-child .nav-dropdown {
+  left: auto;
+  right: 0;
+}
+
+
+/* Official upstream icons for heroes/items. If an upstream icon is absent,
+   we show a neutral placeholder instead of inventing artwork. */
+.entity-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.rec-name { font-size: inherit; }
+.entity-icon {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  object-fit: cover;
+  border: 1px solid rgba(229, 201, 148, 0.35);
+  background: rgba(0,5,51,0.75);
+  box-shadow: 0 0 14px rgba(158,164,217,0.14);
+}
+.entity-icon.hero { border-radius: 8px; }
+.item-icon {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1px solid rgba(229, 201, 148, 0.22);
+  background: rgba(0,5,51,0.72);
+  vertical-align: middle;
+}
+.entity-icon.placeholder, .item-icon.placeholder {
+  display: inline-block;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(229,201,148,.22), transparent 55%),
+    rgba(0,5,51,.72);
+}
+.tier-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.picker-grid button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+
+/* UI polish fixes requested after review */
+.centered-chart {
+  margin-left: auto;
+  margin-right: auto;
+}
+.section-head .sub {
+  font-size: 1.05rem;
+}
+.nav-item:hover, .nav-item:focus-within { z-index: 5001; }
+.nav-dropdown {
+  max-width: min(280px, calc(100vw - 32px));
+}
+.nav .nav-item:nth-last-child(-n+2) .nav-dropdown {
+  left: auto;
+  right: 0;
+}
+select {
+  position: relative;
+  z-index: 1;
+}
+.card, .rec-card, .section {
+  overflow: visible;
+}
+.hero-build-card {
+  border: 1px solid var(--c-rule);
+  padding: var(--s-3);
+  background: rgba(158,164,217,0.025);
+  display: grid;
+  gap: var(--s-2);
+}
+.hero-build-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  color: var(--c-ghost);
+  font-family: var(--f-display);
+  letter-spacing: 0.08em;
+}
+.hero-build-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+}
+.mini-item-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--c-rule);
+  background: rgba(158,164,217,0.02);
+  color: var(--c-ash);
+  padding: 4px 7px;
+  font-family: var(--f-serif);
+  font-size: 0.82rem;
+}
+.mini-item-btn.active {
+  color: var(--c-ink);
+  background: var(--c-moonlight);
+  border-color: var(--c-moonlight);
+}
+.compat-note {
+  color: var(--c-twilight);
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+.sim-build-analysis {
+  display: grid;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+}
+.sim-build-analysis li {
+  color: var(--c-ash);
+  font-family: var(--f-serif);
+  line-height: 1.55;
+}
+
+
+/* Final review fixes: keep navigation dropdowns above charts/selects and avoid stacking-context overlap. */
+.topbar { z-index: 100000 !important; overflow: visible !important; isolation: isolate; }
+.nav, .nav-item { overflow: visible !important; }
+.nav-dropdown { z-index: 100001 !important; }
+.content { position: relative; z-index: 1; }
+.content .section, .content .card, .content .rec-card { z-index: auto; }
+
+/* Center roster chart visually, not just mathematically. */
+.centered-chart {
+  width: min(100%, 980px) !important;
+  max-width: 980px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: block;
+}
+
+/* Simulator build selectors: prevent side-by-side controls from visually colliding. */
+.build-filter-row {
+  display: grid !important;
+  grid-template-columns: minmax(180px, 1fr) 140px 180px;
+  gap: var(--s-2);
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+.build-filter-row input, .build-filter-row select { width: 100%; min-width: 0; }
+@media (max-width: 1050px) { .build-filter-row { grid-template-columns: 1fr; } }
+.sim-build-grid { align-items: start; }
+@media (max-width: 1180px) { .sim-build-grid.grid-2 { grid-template-columns: 1fr; } }
+
+
+/* ============================================================
+   REVIEW FIXES — round 2
+   (charts centred · dropdown overlap · refresh centring ·
+    simulator collapsible builds · exclusivity · build gating)
+   ============================================================ */
+
+/* (1) Centre BOTH overview charts identically. */
+.centered-chart {
+  width: min(100%, 980px) !important;
+  max-width: 980px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: block;
+}
+
+/* (2) Nav dropdowns must never overlap or flicker while hovering between them.
+   The previous 4px gap sat OUTSIDE the nav-item box, so crossing it dropped
+   the :hover and made adjacent menus flash. Anchor the menu flush to the
+   button (no dead zone) and give it internal padding for the same visual gap.
+   The hovered item is lifted above its siblings so only one menu is ever on
+   top. */
+.nav-dropdown {
+  top: 100% !important;
+  padding-top: var(--s-2);
+}
+.nav-item:hover,
+.nav-item:focus-within { z-index: 100002 !important; }
+
+/* (5) Refresh button: centre the label and the spinner together as one group
+   instead of pinning the spinner to the right edge. */
+.btn.refresh { display: inline-flex; align-items: center; justify-content: center; }
+.btn.refresh.spinning { padding-right: var(--s-4); }          /* undo the old 3rem shove */
+.btn.refresh.spinning::before { display: none !important; }   /* remove the edge-pinned spinner */
+.refresh-inner { display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem; }
+.refresh-spinner {
+  width: 11px; height: 11px; flex: 0 0 auto;
+  border: 1px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: refreshspin 0.9s linear infinite;
+}
+@keyframes refreshspin { to { transform: rotate(360deg); } }
+
+/* Simulator — collapsible per-hero build cards. */
+.hero-build-head.as-toggle {
+  width: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+}
+.hero-build-head-right { display: inline-flex; align-items: center; gap: var(--s-2); }
+.build-count.ok { color: var(--c-moonlight); }
+.build-count.pending { color: var(--c-gilt-dim); }
+.caret { display: inline-block; color: var(--c-gilt-dim); transition: transform 0.25s var(--ease); }
+.caret.open { transform: rotate(180deg); }
+
+.hero-build-selected {
+  display: flex; flex-wrap: wrap; gap: var(--s-1);
+  padding-top: var(--s-2);
+  border-top: 1px dashed var(--c-rule);
+}
+.hero-build-items {
+  margin-top: var(--s-2);
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: var(--s-1);
+}
+.hero-build-items::-webkit-scrollbar { width: 8px; }
+.hero-build-items::-webkit-scrollbar-track { background: var(--c-ink); }
+.hero-build-items::-webkit-scrollbar-thumb { background: var(--c-twilight); }
+
+.mini-item-btn .remove-x { margin-left: 4px; color: var(--c-ink); font-weight: 700; }
+.mini-item-btn:disabled { opacity: 0.4; cursor: not-allowed; text-decoration: line-through; }
+.mini-item-btn.blocked { border-style: dashed; opacity: 0.4; cursor: not-allowed; text-decoration: line-through; }
+
+/* Build gating banner + compatibility readout. */
+.build-gate-note {
+  border: 1px solid var(--c-gilt-dim);
+  border-left: 3px solid var(--c-gilt);
+  background: rgba(158,164,217,0.05);
+  color: var(--c-ash);
+  font-family: var(--f-serif);
+  font-style: italic;
+  padding: var(--s-3) var(--s-4);
+  margin-bottom: var(--s-4);
+}
+.compat-readout {
+  display: flex; gap: var(--s-2); flex-wrap: wrap;
+  margin-top: var(--s-2);
+  font-family: var(--f-serif);
+  font-size: 0.96rem;
+  color: var(--c-ash);
+}
+.compat-readout b { color: var(--c-ghost); }
+
+/* ============================================================
+   VISUAL PASS — palette route theming, dropdown polish, chart centring
+   ============================================================ */
+
+.content {
+  max-width: 1500px !important;
+  padding-left: clamp(1.2rem, 2.4vw, 2.4rem) !important;
+  padding-right: clamp(1.2rem, 2.4vw, 2.4rem) !important;
+}
+
+.nav {
+  gap: var(--s-3);
+  align-items: flex-start;
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.nav-button {
+  text-align: center;
+}
+.nav-dropdown {
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%);
+  transform-origin: top center;
+  min-width: 220px;
+  max-width: min(280px, calc(100vw - 32px));
+  margin-top: 0;
+  padding-top: var(--s-2);
+}
+.nav .nav-item:last-child .nav-dropdown,
+.nav .nav-item:nth-last-child(-n+2) .nav-dropdown {
+  left: 50% !important;
+  right: auto !important;
+}
+.nav-item:hover .nav-dropdown,
+.nav-item:focus-within .nav-dropdown {
+  animation: dropdownDrop 0.18s var(--ease-out) both;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2.5rem !important;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--c-gilt) 50%),
+    linear-gradient(135deg, var(--c-gilt) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% - 2px),
+    calc(100% - 12px) calc(50% - 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.chart-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.chart-card > h3 {
+  width: 100%;
+  text-align: center;
+  margin-bottom: var(--s-4) !important;
+}
+.chart-card-roster {
+  min-height: 720px;
+}
+.chart-card-networth {
+  min-height: 760px;
+}
+.centered-chart {
+  width: 100% !important;
+  max-width: 1320px !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.centered-chart > div {
+  width: 100% !important;
+  height: 100% !important;
+}
+.centered-chart--roster {
+  min-height: 600px;
+}
+.centered-chart--networth {
+  min-height: 620px;
+}
+.recharts-surface,
+.recharts-wrapper {
+  overflow: visible;
+  margin: 0 auto;
+}
+
+/* Make overview graph frames look a bit richer while staying readable. */
+.chart-card {
+  background:
+    radial-gradient(circle at top center, rgba(154,138,110,0.08), transparent 40%),
+    linear-gradient(180deg, var(--c-panel-2) 0%, var(--c-panel) 100%);
+}
+.chart-card::after {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(154,138,110,0.14);
+  pointer-events: none;
+}
+
+.item-icon {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid rgba(154,138,110,0.22);
+  background: transparent;
+  box-shadow: none;
+}
+.tier-chip .item-icon {
+  width: 28px;
+  height: 28px;
+  flex-basis: 28px;
+}
+
+.hero-build-head.as-toggle {
+  padding-right: var(--s-2);
+}
+.hero-build-head-right {
+  margin-right: var(--s-2);
+  gap: 0.95rem;
+}
+.caret {
+  min-width: 1rem;
+  text-align: center;
+}
+
+/* Keep chart cards centred even when empty states are shown. */
+.chart-card > .muted,
+.chart-card > p {
+  width: 100%;
+  text-align: center;
+}
+
+@keyframes dropdownDropCentered {
+  from { opacity: 0; transform: translate(-50%, -8px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+.nav-item:hover .nav-dropdown,
+.nav-item:focus-within .nav-dropdown {
+  animation: dropdownDropCentered 0.18s var(--ease-out) both !important;
+}
+
+/* ML cross-check block inside recommendation case files */
+.rec-section.ml-evidence {
+  border-left-color: var(--c-moonlight);
+  background: rgba(158,164,217,0.035);
+  padding-top: var(--s-2);
+  padding-bottom: var(--s-2);
+}
+.rec-section.ml-evidence .heading {
+  color: var(--c-moonlight);
+}
+
+
+/* ============================================================
+   FINAL PALETTE + CHART VISIBILITY FIXES
+   ============================================================ */
+
+.topbar {
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--c-deeper) 88%, var(--c-obsidian) 12%) 0%,
+      color-mix(in srgb, var(--c-ink) 76%, var(--c-obsidian) 24%) 100%) !important;
+  border-bottom-color: var(--c-twilight) !important;
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--c-moonlight) 13%, transparent),
+    0 14px 40px -20px var(--c-deeper) !important;
+}
+.footer {
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--c-ink) 90%, transparent),
+      color-mix(in srgb, var(--c-deeper) 94%, transparent)) !important;
+  border-top-color: var(--c-twilight) !important;
+}
+.card,
+.rec-card,
+.tile,
+.phase-card,
+.tier-letter,
+.tier-items,
+.dispatch,
+.hero-build-card {
+  background:
+    radial-gradient(circle at 50% -15%, color-mix(in srgb, var(--c-moonlight) 9%, transparent), transparent 42%),
+    linear-gradient(180deg, var(--c-panel-2) 0%, var(--c-panel) 100%) !important;
+  border-color: var(--c-twilight) !important;
+}
+.nav-dropdown,
+input,
+select,
+.picker-grid button,
+.mini-item-btn,
+.btn {
+  background: var(--c-panel) !important;
+  border-color: var(--c-twilight) !important;
+}
+.btn:hover:not(:disabled),
+.picker-grid button:hover,
+.mini-item-btn:hover:not(:disabled) {
+  border-color: var(--c-moonlight) !important;
+  color: var(--c-ghost) !important;
+}
+.section-head::after,
+.topbar::after,
+.dispatch::after {
+  background: linear-gradient(90deg, transparent, var(--c-gilt-dim) 22%, var(--c-gilt) 50%, var(--c-gilt-dim) 78%, transparent) !important;
+}
+
+/* Recharts needs an explicit pixel-height parent. The previous percentage
+   height could collapse in Vite/Chrome and make the win-rate chart disappear. */
+.chart-card-roster {
+  min-height: 790px !important;
+  justify-content: center !important;
+}
+.chart-card-networth {
+  min-height: 790px !important;
+  justify-content: center !important;
+}
+.centered-chart--roster {
+  height: 640px !important;
+  min-height: 640px !important;
+  width: min(100%, 1360px) !important;
+  max-width: 1360px !important;
+  flex: 0 0 auto !important;
+}
+.centered-chart--networth {
+  min-height: 640px !important;
+  width: min(100%, 1360px) !important;
+  max-width: 1360px !important;
+  flex: 0 0 auto !important;
+}
+.centered-chart,
+.centered-chart > div,
+.centered-chart .recharts-responsive-container {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+.recharts-wrapper {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Official item art only: make all displayed item art consistent; when upstream
+   has no official image, the component omits the placeholder instead of showing
+   mixed fake/neutral icons. */
+.item-icon {
+  width: 28px !important;
+  height: 28px !important;
+  flex: 0 0 28px !important;
+  object-fit: contain !important;
+  border-radius: 5px !important;
+  background: color-mix(in srgb, var(--c-ink) 72%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--c-twilight) 62%, transparent) !important;
+}
+.tier-chip {
+  min-height: 34px;
+}
+.tier-chip .item-icon {
+  width: 30px !important;
+  height: 30px !important;
+  flex-basis: 30px !important;
+}
+
+
+/* ============================================================
+   FINAL PROPOSAL FIXES — single palette, simulator readability, ML cards
+   ============================================================ */
+
+/* Hero/item names should never disappear on hover or active state. Earlier
+   active colors were too close to the panel after palette overrides. */
+.picker-grid button,
+.mini-item-btn,
+.hero-build-head.as-toggle {
+  color: var(--c-ash) !important;
+}
+.picker-grid button span,
+.mini-item-btn span,
+.hero-build-head.as-toggle span {
+  color: inherit !important;
+}
+.picker-grid button:hover,
+.mini-item-btn:hover:not(:disabled),
+.hero-build-head.as-toggle:hover {
+  color: var(--c-ghost) !important;
+  background: color-mix(in srgb, var(--c-panel-2) 84%, var(--c-moonlight) 16%) !important;
+}
+.picker-grid button.active,
+.mini-item-btn.active {
+  color: var(--c-ghost) !important;
+  background: color-mix(in srgb, var(--c-panel-2) 68%, var(--c-moonlight) 32%) !important;
+  border-color: var(--c-moonlight) !important;
+  text-shadow: 0 0 10px color-mix(in srgb, var(--c-moonlight) 30%, transparent);
+}
+.mini-item-btn .remove-x {
+  color: var(--c-ghost) !important;
+}
+.btn:disabled {
+  cursor: not-allowed !important;
+}
+
+/* ML status and model output blocks — intentionally visible for final demo. */
+.ml-status-card {
+  display: grid;
+  gap: var(--s-3);
+  border-left: 4px solid var(--c-moonlight) !important;
+}
+.ml-status-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--s-3);
+}
+.ml-stat {
+  border: 1px solid var(--c-rule);
+  background: color-mix(in srgb, var(--c-panel) 80%, var(--c-moonlight) 8%);
+  padding: var(--s-3);
+  min-height: 88px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.ml-stat .label {
+  font-family: var(--f-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--c-gilt-dim);
+  margin-bottom: var(--s-1);
+}
+.ml-stat .value {
+  font-family: var(--f-mono);
+  color: var(--c-ghost);
+  font-size: 1.05rem;
+}
+.ml-pipeline {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--s-2);
+  margin-top: var(--s-2);
+}
+.ml-pipeline span {
+  border: 1px solid var(--c-rule);
+  padding: var(--s-2) var(--s-3);
+  text-align: center;
+  color: var(--c-ash);
+  background: color-mix(in srgb, var(--c-panel) 78%, var(--c-moonlight) 6%);
+  font-family: var(--f-serif);
+  font-style: italic;
+}
+.ml-class-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--c-moonlight);
+  padding: 0.25rem 0.55rem;
+  color: var(--c-ghost);
+  background: color-mix(in srgb, var(--c-panel) 76%, var(--c-moonlight) 18%);
+  font-family: var(--f-mono);
+}
+.rec-section.ml-evidence {
+  border-left-color: var(--c-moonlight) !important;
+  background: color-mix(in srgb, var(--c-panel) 86%, var(--c-moonlight) 8%);
+  padding-top: var(--s-2);
+  padding-bottom: var(--s-2);
+}
+@media (max-width: 1100px) {
+  .ml-status-grid,
+  .ml-pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .ml-status-grid,
+  .ml-pipeline { grid-template-columns: 1fr; }
+}
+
+
+/* Footer source links */
+.footer { display: flex; justify-content: center; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.footer a { color: var(--c-gilt); border-bottom: 1px dotted currentColor; }
+.footer a:hover { color: var(--c-ghost); }
+
+/* Keep simulator hero/item names readable on hover/active states. */
+.picker-grid button:hover span,
+.picker-grid button.active span,
+.mini-item-btn:hover span,
+.mini-item-btn.active span,
+.hero-build-head:hover span,
+.hero-build-head.as-toggle:hover span {
+  color: inherit !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+.picker-grid button.active .entity-icon + span,
+.picker-grid button:hover .entity-icon + span {
+  color: currentColor !important;
+}
+
+
+/* ============================================================
+   DATA-LOAD STABILITY + HOVER READABILITY
+   ============================================================ */
+
+/* Some palette combinations made selected/hovered button labels blend into
+   their backgrounds. Keep names visible in hero and item pickers at all times. */
+.picker-grid button,
+.mini-item-btn,
+.hero-build-head.as-toggle {
+  color: var(--c-ash) !important;
+}
+.picker-grid button span,
+.mini-item-btn span,
+.hero-build-head.as-toggle span {
+  color: inherit !important;
+}
+.picker-grid button:hover:not(.active),
+.mini-item-btn:hover:not(.active),
+.hero-build-head.as-toggle:hover {
+  color: var(--c-ghost) !important;
+  background: color-mix(in srgb, var(--c-panel-2) 82%, var(--c-moonlight) 18%) !important;
+}
+.picker-grid button.active,
+.picker-grid button.active:hover {
+  color: var(--c-ink) !important;
+  background: var(--c-moonlight) !important;
+  border-color: var(--c-moonlight) !important;
+}
+.mini-item-btn.active,
+.mini-item-btn.active:hover {
+  color: var(--c-ink) !important;
+  background: var(--c-moonlight) !important;
+  border-color: var(--c-moonlight) !important;
+}
+.mini-item-btn:disabled,
+.mini-item-btn.blocked {
+  color: color-mix(in srgb, var(--c-ash) 70%, transparent) !important;
+}
+
+/* Make intermediate loading/empty states occupy the card instead of looking
+   like missing data. */
+.card > .muted,
+.tier-items > .muted {
+  text-align: center;
+}
+
+
+/* ============================================================
+   ITEM RECOMMENDATIONS
+   Compact category lists with expandable case files.
+   ============================================================ */
+
+.item-rec-panel {
+  padding: var(--s-4);
+}
+
+.item-rec-list {
+  display: grid;
+  gap: var(--s-2);
+}
+
+.item-rec-row {
+  border: 1px solid var(--c-rule);
+  background: rgba(158,164,217,0.025);
+}
+
+.item-rec-row.open {
+  border-color: var(--c-twilight);
+  box-shadow: inset 0 0 0 1px rgba(158,164,217,0.04);
+}
+
+.item-rec-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  background: transparent;
+  border: none;
+  color: var(--c-ash);
+  text-align: left;
+  transition: all 0.18s var(--ease);
+}
+
+.item-rec-head:hover {
+  color: var(--c-ghost) !important;
+  background: color-mix(in srgb, var(--c-panel-2) 82%, var(--c-moonlight) 18%);
+}
+
+.item-rec-head .entity-cell {
+  min-width: 0;
+  font-family: var(--f-display);
+  letter-spacing: 0.08em;
+  color: inherit;
+}
+
+.item-rec-head .entity-cell span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-rec-meta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+  color: inherit;
+}
+
+.item-rec-body {
+  display: grid;
+  gap: var(--s-3);
+  padding: 0 var(--s-3) var(--s-3);
+  border-top: 1px dashed var(--c-rule);
+}
+
+.item-rec-stats {
+  margin-top: var(--s-3);
+}
+
+@media (max-width: 900px) {
+  .item-rec-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .item-rec-meta {
+    justify-content: flex-start;
+  }
+}
+
+
+/* ============================================================
+   WIDER FINAL LAYOUT + FOOTER ALIGNMENT
+   ============================================================ */
+
+.content {
+  max-width: 1720px !important;
+  padding-left: clamp(1.4rem, 2.8vw, 3.6rem) !important;
+  padding-right: clamp(1.4rem, 2.8vw, 3.6rem) !important;
+}
+
+.section {
+  width: 100%;
+}
+
+.card,
+.rec-card,
+.item-rec-panel,
+.dispatch {
+  width: 100%;
+}
+
+.grid {
+  width: 100%;
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.rec-card,
+.card {
+  padding-left: clamp(1.4rem, 2vw, 2.6rem);
+  padding-right: clamp(1.4rem, 2vw, 2.6rem);
+}
+
+.item-rec-panel {
+  padding: clamp(1.3rem, 2vw, 2.4rem) !important;
+}
+
+.item-rec-head {
+  min-height: 62px;
+}
+
+.item-rec-body {
+  padding-left: clamp(1rem, 1.8vw, 2rem) !important;
+  padding-right: clamp(1rem, 1.8vw, 2rem) !important;
+}
+
+.footer {
+  min-height: 86px !important;
+  padding: 1.25rem clamp(1.4rem, 3vw, 3.6rem) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: var(--s-4);
+  text-align: left !important;
+  font-size: 0.98rem !important;
+  color: var(--c-ash) !important;
+  letter-spacing: 0.08em;
+}
+
+.footer::before {
+  display: none !important;
+}
+
+.footer-left,
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.footer-left {
+  justify-content: flex-start;
+}
+
+.footer-left span,
+.footer-right span {
+  font-family: var(--f-display);
+  color: var(--c-ghost);
+  text-transform: uppercase;
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+}
+
+.footer-left small {
+  color: var(--c-twilight);
+  font-style: italic;
+  font-size: 0.92rem;
+  letter-spacing: 0.08em;
+}
+
+.footer-right {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.footer-right a {
+  color: var(--c-gilt);
+  text-decoration: none;
+  font-style: italic;
+  font-size: 0.98rem;
+}
+
+.footer-right a:hover {
+  color: var(--c-ghost);
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .footer {
+    align-items: flex-start !important;
+    flex-direction: column;
+  }
+  .footer-right {
+    justify-content: flex-start;
+  }
+}
+
+
+/* ============================================================
+   FINAL WIDTH + WIN-RATE CHART POSITIONING TWEAK
+   ============================================================ */
+
+/* Stretch the app a little more across large monitors. */
+.content {
+  max-width: 1880px !important;
+  padding-left: clamp(1.2rem, 2.2vw, 4.2rem) !important;
+  padding-right: clamp(1.2rem, 2.2vw, 4.2rem) !important;
+}
+
+.card,
+.rec-card,
+.item-rec-panel,
+.hero-build-card,
+.dispatch {
+  width: 100%;
+}
+
+/* The win-rate roster card previously had too much empty space at the bottom.
+   Lower the card height and chart height slightly so the bars/labels feel
+   centered inside the border rather than floating high. */
+.chart-card-roster {
+  min-height: 660px !important;
+  padding-bottom: clamp(0.8rem, 1.2vw, 1.4rem) !important;
+  justify-content: center !important;
+}
+
+.centered-chart--roster {
+  height: 540px !important;
+  min-height: 540px !important;
+  max-width: 1500px !important;
+}
+
+/* Reduce the internal bottom reserve for diagonal hero labels. */
+.chart-card-roster .recharts-wrapper {
+  margin-top: -0.35rem !important;
+}

@@ -1,0 +1,348 @@
+{
+  "version": "2026-06-user-seed",
+  "description": "External item upgrade seed. Each row is a direct parent -> upgrade relationship. The simulator blocks the selected item only against its direct parent/children; sibling upgrades are not mutually exclusive. Example: Rapid Rounds is directly related to Burst Fire and Swift Striker, but Burst Fire and Swift Striker do not block each other.",
+  "sources": [
+    {
+      "name": "Deadlock API",
+      "url": "https://deadlock-api.com",
+      "use": "live hero/item aggregate statistics and official asset metadata"
+    },
+    {
+      "name": "Statlocker Deadlock items/builds",
+      "url": "https://statlocker.gg/items",
+      "use": "reference for item statistics/build analytics and future hero-item build rows"
+    },
+    {
+      "name": "Statlocker Eternus builds",
+      "url": "https://statlocker.gg/builds/eternus-builds",
+      "use": "reference for build item purchase rates, WPA, timings and synergy data when export/API is available"
+    },
+    {
+      "name": "Liquipedia Deadlock items",
+      "url": "https://liquipedia.net/deadlock/Portal:Items",
+      "use": "reference for item categories, tiers and upgrade relationships"
+    }
+  ],
+  "paths": [
+    {
+      "category": "weapon",
+      "base": "Close Quarters",
+      "upgrades": [
+        "Point Blank"
+      ]
+    },
+    {
+      "category": "weapon",
+      "base": "Extended Magazine",
+      "upgrades": [
+        "Escalating Resilience",
+        "Titanic Magazine"
+      ]
+    },
+    {
+      "category": "weapon",
+      "base": "Headshot Booster",
+      "upgrades": [
+        "Headhunter"
+      ]
+    },
+    {
+      "category": "weapon",
+      "base": "High-Velocity Rounds",
+      "upgrades": [
+        "Express Shot",
+        "Armor Piercing Rounds"
+      ]
+    },
+    {
+      "category": "weapon",
+      "base": "Monster Rounds",
+      "upgrades": [
+        "Cultist Sacrifice"
+      ]
+    },
+    {
+      "category": "weapon",
+      "base": "Rapid Rounds",
+      "upgrades": [
+        "Burst Fire",
+        "Swift Striker"
+      ]
+    },
+    {
+      "category": "weapon",
+      "base": "Long Range",
+      "upgrades": [
+        "Sharpshooter"
+      ]
+    },
+    {
+      "category": "weapon",
+      "base": "Melee Charge",
+      "upgrades": [
+        "Crushing Fists"
+      ]
+    },
+    {
+      "category": "weapon",
+      "base": "Slowing Bullets",
+      "upgrades": [
+        "Weighted Shots"
+      ]
+    },
+    {
+      "category": "weapon",
+      "base": "Spirit Shredder Bullets",
+      "upgrades": [
+        "Spirit Rend"
+      ]
+    },
+    {
+      "category": "weapon",
+      "base": "Tesla Bullets",
+      "upgrades": [
+        "Capacitor"
+      ]
+    },
+    {
+      "category": "weapon",
+      "base": "Weakening Headshot",
+      "upgrades": [
+        "Crippling Headshot"
+      ]
+    },
+    {
+      "category": "vitality",
+      "base": "Extra Health",
+      "upgrades": [
+        "Fortitude",
+        "Colossus"
+      ]
+    },
+    {
+      "category": "vitality",
+      "base": "Extra Regen",
+      "upgrades": [
+        "Healing Booster"
+      ]
+    },
+    {
+      "category": "vitality",
+      "base": "Extra Stamina",
+      "upgrades": [
+        "Stamina Mastery",
+        "Kinetic Dash",
+        "Arcane Surge"
+      ]
+    },
+    {
+      "category": "vitality",
+      "base": "Grit",
+      "upgrades": [
+        "Weapon Shielding",
+        "Spirit Shielding",
+        "Reactive Barrier",
+        "Guardian Ward"
+      ]
+    },
+    {
+      "category": "vitality",
+      "base": "Reactive Barrier",
+      "upgrades": [
+        "Indomitable"
+      ]
+    },
+    {
+      "category": "vitality",
+      "base": "Guardian Ward",
+      "upgrades": [
+        "Divine Barrier"
+      ]
+    },
+    {
+      "category": "vitality",
+      "base": "Healing Rite",
+      "upgrades": [
+        "Rescue Beam",
+        "Healing Nova"
+      ]
+    },
+    {
+      "category": "vitality",
+      "base": "Melee Lifesteal",
+      "upgrades": [
+        "Lifestrike"
+      ]
+    },
+    {
+      "category": "vitality",
+      "base": "Sprint Boots",
+      "upgrades": [
+        "Trophy Collector",
+        "Enduring Speed",
+        "Veil Walker"
+      ]
+    },
+    {
+      "category": "vitality",
+      "base": "Enduring Speed",
+      "upgrades": [
+        "Juggernaut"
+      ]
+    },
+    {
+      "category": "vitality",
+      "base": "Bullet Lifesteal",
+      "upgrades": [
+        "Leech",
+        "Fury Trance",
+        "Vampiric Burst"
+      ]
+    },
+    {
+      "category": "vitality",
+      "base": "Debuff Reducer",
+      "upgrades": [
+        "Unstoppable",
+        "Spellbreaker"
+      ]
+    },
+    {
+      "category": "vitality",
+      "base": "Spirit Lifesteal",
+      "upgrades": [
+        "Leech",
+        "Spiritual Overflow",
+        "Infuser"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Extra Charge",
+      "upgrades": [
+        "Rapid Recharge"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Extra Spirit",
+      "upgrades": [
+        "Improved Spirit",
+        "Surge of Power"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Improved Spirit",
+      "upgrades": [
+        "Boundless Spirit"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Mystic Burst",
+      "upgrades": [
+        "Tankbuster"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Mystic Expansion",
+      "upgrades": [
+        "Greater Expansion",
+        "Ballistic Enchantment"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Mystic Regeneration",
+      "upgrades": [
+        "Radiant Regeneration"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Rusted Barrel",
+      "upgrades": [
+        "Disarming Hex"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Spirit Strike",
+      "upgrades": [
+        "Spirit Snatch"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Mystic Vulnerability",
+      "upgrades": [
+        "Escalating Exposure"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Mystic Slow",
+      "upgrades": [
+        "Lightning Scroll"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Compress Cooldown",
+      "upgrades": [
+        "Superior Cooldown"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Duration Extender",
+      "upgrades": [
+        "Superior Duration"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Quicksilver Reload",
+      "upgrades": [
+        "Mercurial Magnum"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Slowing Hex",
+      "upgrades": [
+        "Vortex Web"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Spirit Sap",
+      "upgrades": [
+        "Focus Lens"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Cold Front",
+      "upgrades": [
+        "Arctic Blast"
+      ]
+    },
+    {
+      "category": "vitality",
+      "base": "Healing Booster",
+      "upgrades": [
+        "Healing Tempo"
+      ]
+    },
+    {
+      "category": "spirit",
+      "base": "Superior Cooldown",
+      "upgrades": [
+        "Transcendent Cooldown"
+      ]
+    }
+  ]
+}

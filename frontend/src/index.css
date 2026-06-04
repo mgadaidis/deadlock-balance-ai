@@ -1,0 +1,314 @@
+/* ============================================================
+   DEADLOCK BALANCE — Bureau of Equilibrium
+   1940s Occult Noir · Supernatural Retro NYC
+   Palette: deepened with warm gilt suggestions, gas-lamp glow,
+   moonlit lavender, and parchment ash.
+   ============================================================ */
+
+:root {
+  /* Base palette (user-specified) */
+  --c-ink:       #000533;
+  --c-obsidian:  #1E2140;
+  --c-twilight:  #4D5173;
+  --c-ash:       #9092A6;
+  --c-moonlight: #9EA4D9;
+
+  /* Derived — each one is layered or blended from the above so the
+     brand stays unified even when we reach beyond the five base hues. */
+  --c-deeper:    #00021F;                       /* darker than ink for vignettes */
+  --c-panel:    color-mix(in srgb, var(--c-obsidian) 92%, black);
+  --c-panel-2:  color-mix(in srgb, var(--c-obsidian) 80%, var(--c-twilight));
+  --c-rule:     color-mix(in srgb, var(--c-twilight) 70%, transparent);
+  --c-gilt:     color-mix(in srgb, var(--c-moonlight) 60%, #E5C994 40%);
+  --c-gilt-dim: color-mix(in srgb, var(--c-moonlight) 60%, #6E5B3A 40%);
+  --c-blood:    color-mix(in srgb, var(--c-moonlight) 30%, #6B1F2A 70%);
+  --c-ghost:    color-mix(in srgb, var(--c-moonlight) 80%, white 20%);
+  --c-veil:     rgba(0, 5, 51, 0.7);
+
+  /* Glow shadow used for "gas-lamp light pooled on a panel". */
+  --glow-moon: 0 0 0 1px rgba(158,164,217,0.18),
+               0 0 30px -8px rgba(158,164,217,0.35),
+               0 18px 60px -20px rgba(0,5,51,0.9);
+
+  /* Spacing scale */
+  --s-1: 0.4rem;
+  --s-2: 0.8rem;
+  --s-3: 1.2rem;
+  --s-4: 1.8rem;
+  --s-5: 2.6rem;
+  --s-6: 3.6rem;
+  --s-7: 5rem;
+
+  --r-sm: 0;          /* no rounded corners — period authenticity */
+  --r-md: 0;
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Typography */
+  --f-display: 'Cinzel', 'Times New Roman', serif;
+  --f-serif:   'Cormorant Garamond', 'Georgia', serif;
+  --f-mono:    'Special Elite', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0; padding: 0; min-height: 100%;
+  background: var(--c-ink);
+  color: var(--c-ash);
+  font-family: var(--f-serif);
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.005em;
+}
+
+body {
+  /* A layered backdrop:
+     1) deep radial vignette (window-pane light), 2) faint vertical
+     "rain on glass" gradient, 3) base ink colour. */
+  background:
+    radial-gradient(1400px 700px at 50% -10%, rgba(158,164,217,0.07), transparent 65%),
+    radial-gradient(900px 1100px at -10% 110%, rgba(77,81,115,0.18), transparent 60%),
+    linear-gradient(180deg, var(--c-deeper) 0%, var(--c-ink) 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Film-grain / paper-grain overlay so flat fills don't feel CGI-modern.
+   Pure CSS — no image file required. */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  z-index: 999;
+  background-image:
+    repeating-linear-gradient(0deg,
+      transparent 0 2px,
+      rgba(158,164,217,0.4) 2px 3px),
+    repeating-linear-gradient(90deg,
+      transparent 0 2px,
+      rgba(158,164,217,0.3) 2px 3px);
+  mix-blend-mode: overlay;
+}
+
+/* ---- Typography hierarchy ---- */
+
+h1, h2, h3, h4 {
+  font-family: var(--f-display);
+  font-weight: 600;
+  color: var(--c-ghost);
+  letter-spacing: 0.18em;
+  margin: 0;
+  text-transform: uppercase;
+  text-shadow: 0 0 24px rgba(158,164,217,0.18);
+}
+h1 { font-size: 1.0rem;  letter-spacing: 0.32em; }
+h2 { font-size: 1.6rem;  letter-spacing: 0.16em; }
+h3 { font-size: 1.05rem; letter-spacing: 0.22em; }
+h4 { font-size: 0.78rem; letter-spacing: 0.28em; color: var(--c-gilt-dim); }
+
+p {
+  margin: 0;
+  font-family: var(--f-serif);
+  line-height: 1.7;
+  color: var(--c-ash);
+  font-size: 1.02rem;
+}
+
+a {
+  color: var(--c-moonlight);
+  text-decoration: none;
+  border-bottom: 1px dotted transparent;
+  transition: all 0.25s var(--ease);
+}
+a:hover { color: var(--c-ghost); border-bottom-color: currentColor; }
+
+button { font: inherit; cursor: pointer; }
+
+/* ---- Animations ---- */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes lampFlicker {
+  0%, 100% { opacity: 1; }
+  47%      { opacity: 0.94; }
+  49%      { opacity: 1; }
+  51%      { opacity: 0.88; }
+  53%      { opacity: 1; }
+}
+@keyframes dropdownDrop {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+.animate-fade-up { animation: fadeUp 0.6s var(--ease-out) both; }
+.animate-fade-in { animation: fadeIn 0.5s var(--ease) both; }
+.lamp-flicker    { animation: lampFlicker 8s ease-in-out infinite; }
+
+/* ---- Recharts hooks ---- */
+
+.recharts-cartesian-grid line { stroke: rgba(154,158,200,0.06) !important; }
+.recharts-tooltip-wrapper { outline: none !important; }
+.recharts-text { font-family: var(--f-serif) !important; letter-spacing: 0.04em; }
+.recharts-cartesian-axis-tick-value { fill: var(--c-ash) !important; }
+
+/* ---- Numbers/data use the typewriter face ---- */
+.mono { font-family: var(--f-mono); letter-spacing: 0.02em; }
+.muted { color: var(--c-twilight); }
+
+/* ============================================================
+   ROUTE THEMES — user-specified palettes
+   Overview = neutral, Simulator = green, Recommendations = purple
+   ============================================================ */
+
+body[data-theme="overview"] {
+  --c-ink: #0E0601;
+  --c-obsidian: #746853;
+  --c-twilight: #84632E;
+  --c-ash: #9A8A6E;
+  --c-moonlight: #7E410A;
+  --c-deeper: #080401;
+  --c-gilt: #9A8A6E;
+  --c-gilt-dim: #84632E;
+  --c-blood: #7E410A;
+  --c-ghost: #E7DDCF;
+  --glow-moon: 0 0 0 1px rgba(154,138,110,0.22),
+               0 0 28px -8px rgba(132,99,46,0.38),
+               0 18px 60px -20px rgba(14,6,1,0.92);
+}
+
+body[data-theme="simulator"] {
+  --c-ink: #2D3329;
+  --c-obsidian: #445D38;
+  --c-twilight: #4E5440;
+  --c-ash: #797765;
+  --c-moonlight: #6CAF84;
+  --c-deeper: #20241D;
+  --c-gilt: #6CAF84;
+  --c-gilt-dim: #4E5440;
+  --c-blood: #445D38;
+  --c-ghost: #E0EEE5;
+  --glow-moon: 0 0 0 1px rgba(108,175,132,0.20),
+               0 0 28px -8px rgba(108,175,132,0.28),
+               0 18px 60px -20px rgba(32,36,29,0.92);
+}
+
+body[data-theme="recommendations"] {
+  --c-ink: #332B3F;
+  --c-obsidian: #504864;
+  --c-twilight: #705D6D;
+  --c-ash: #C4AFD0;
+  --c-moonlight: #AB66D9;
+  --c-deeper: #241D2D;
+  --c-gilt: #AB66D9;
+  --c-gilt-dim: #705D6D;
+  --c-blood: #633A8C;
+  --c-ghost: #E3C9EB;
+  --glow-moon: 0 0 0 1px rgba(171,102,217,0.22),
+               0 0 30px -8px rgba(171,102,217,0.34),
+               0 18px 60px -20px rgba(36,29,45,0.92);
+}
+
+
+/* ============================================================
+   FULL-PAGE PALETTE APPLICATION
+   Each route applies one uploaded palette to the whole page: body,
+   header, footer, panels, borders, inputs, buttons and chart surfaces.
+   ============================================================ */
+
+body[data-theme="overview"] {
+  --c-ink: #0E0601;
+  --c-obsidian: #746853;
+  --c-twilight: #84632E;
+  --c-ash: #9A8A6E;
+  --c-moonlight: #7E410A;
+  --c-deeper: #080301;
+  --c-panel: color-mix(in srgb, #0E0601 84%, #746853 16%);
+  --c-panel-2: color-mix(in srgb, #0E0601 72%, #746853 28%);
+  --c-rule: color-mix(in srgb, #84632E 70%, transparent);
+  --c-gilt: #9A8A6E;
+  --c-gilt-dim: #84632E;
+  --c-blood: #7E410A;
+  --c-ghost: #E6D8C1;
+  --c-veil: rgba(14, 6, 1, 0.74);
+  --glow-moon: 0 0 0 1px rgba(132,99,46,0.26),
+               0 0 32px -8px rgba(126,65,10,0.38),
+               0 18px 60px -20px rgba(14,6,1,0.96);
+}
+
+body[data-theme="simulator"] {
+  --c-ink: #2D3329;
+  --c-obsidian: #445D38;
+  --c-twilight: #4E5440;
+  --c-ash: #797765;
+  --c-moonlight: #6CAF84;
+  --c-deeper: #20251D;
+  --c-panel: color-mix(in srgb, #2D3329 84%, #445D38 16%);
+  --c-panel-2: color-mix(in srgb, #2D3329 70%, #445D38 30%);
+  --c-rule: color-mix(in srgb, #4E5440 72%, transparent);
+  --c-gilt: #6CAF84;
+  --c-gilt-dim: #4E5440;
+  --c-blood: #445D38;
+  --c-ghost: #E0EEE5;
+  --c-veil: rgba(45, 51, 41, 0.74);
+  --glow-moon: 0 0 0 1px rgba(108,175,132,0.24),
+               0 0 34px -8px rgba(108,175,132,0.34),
+               0 18px 60px -20px rgba(32,37,29,0.96);
+}
+
+body[data-theme="recommendations"] {
+  --c-ink: #332B3F;
+  --c-obsidian: #504864;
+  --c-twilight: #705D6D;
+  --c-ash: #C4AFD0;
+  --c-moonlight: #AB66D9;
+  --c-deeper: #241D2E;
+  --c-panel: color-mix(in srgb, #332B3F 82%, #504864 18%);
+  --c-panel-2: color-mix(in srgb, #332B3F 68%, #504864 32%);
+  --c-rule: color-mix(in srgb, #705D6D 72%, transparent);
+  --c-gilt: #AB66D9;
+  --c-gilt-dim: #705D6D;
+  --c-blood: #8E4EC0;
+  --c-ghost: #E7D0F0;
+  --c-veil: rgba(51, 43, 63, 0.74);
+  --glow-moon: 0 0 0 1px rgba(171,102,217,0.24),
+               0 0 34px -8px rgba(171,102,217,0.36),
+               0 18px 60px -20px rgba(36,29,46,0.96);
+}
+
+body[data-theme] {
+  background:
+    radial-gradient(1400px 760px at 50% -12%, color-mix(in srgb, var(--c-moonlight) 16%, transparent), transparent 65%),
+    radial-gradient(1000px 1100px at -10% 110%, color-mix(in srgb, var(--c-twilight) 30%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--c-deeper) 0%, var(--c-ink) 100%);
+}
+body[data-theme]::before {
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 2px, color-mix(in srgb, var(--c-moonlight) 30%, transparent) 2px 3px),
+    repeating-linear-gradient(90deg, transparent 0 2px, color-mix(in srgb, var(--c-moonlight) 20%, transparent) 2px 3px);
+}
+
+body[data-theme] h1,
+body[data-theme] h2,
+body[data-theme] h3,
+body[data-theme] h4 {
+  text-shadow: 0 0 24px color-mix(in srgb, var(--c-moonlight) 22%, transparent);
+}
+body[data-theme] .recharts-cartesian-grid line {
+  stroke: color-mix(in srgb, var(--c-twilight) 24%, transparent) !important;
+}
+body[data-theme] .recharts-cartesian-axis-tick-value {
+  fill: var(--c-ash) !important;
+}

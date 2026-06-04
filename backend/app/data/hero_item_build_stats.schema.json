@@ -1,0 +1,43 @@
+{
+  "version": "2026-06-schema",
+  "description": "Optional external hero-item build rows for improving simulator compatibility when Statlocker/Liquipedia/exported build data is available. This file is intentionally data-only so new rows can be added without changing Python code.",
+  "required_fields": [
+    "source",
+    "hero_name",
+    "item_name"
+  ],
+  "fields": {
+    "source": "statlocker | liquipedia | manual_review | deadlock_api",
+    "source_url": "URL where the row was gathered",
+    "snapshot_date": "YYYY-MM-DD or patch label",
+    "rank_filter": "all | eternus | high_mmr | custom",
+    "match_mode": "standard | brawl | normal | ranked",
+    "hero_name": "hero display name matching API metadata",
+    "item_name": "item display name matching API metadata",
+    "item_category": "weapon | spirit | vitality | unknown",
+    "purchase_rate": "0..1 proportion of builds/matches where the item appears for this hero",
+    "win_rate": "0..1 win rate for hero+item when available",
+    "wpa": "win probability added / win-rate delta from source when available",
+    "avg_buy_time_s": "average purchase time in seconds when available",
+    "sample_size": "matches/builds observed",
+    "compatibility_label": "strong | neutral | weak, optional curated label when exact statistics are unavailable"
+  },
+  "rows": [
+    {
+      "source": "schema_example",
+      "source_url": "https://statlocker.gg/builds/eternus-builds",
+      "snapshot_date": "YYYY-MM-DD",
+      "rank_filter": "eternus",
+      "match_mode": "standard",
+      "hero_name": "Haze",
+      "item_name": "Swift Striker",
+      "item_category": "weapon",
+      "purchase_rate": 0.42,
+      "win_rate": 0.55,
+      "wpa": 0.018,
+      "avg_buy_time_s": 980,
+      "sample_size": 1200,
+      "compatibility_label": "strong"
+    }
+  ]
+}
