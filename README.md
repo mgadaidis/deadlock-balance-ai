@@ -8,7 +8,8 @@ heroes with explainable rationales, and predicts team win probability.
 > Project — authors: **Mia Giorgadze, Mikheil Gadaidis**.
 
 ---
-
+ 
+ 
 ## Architecture
 
 ```
