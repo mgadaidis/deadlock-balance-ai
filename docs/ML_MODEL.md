@@ -305,5 +305,3 @@ The model is still useful because it provides an explainable prototype for data-
 The machine learning component improves the project by giving a model-based comparison for hero balance.
 
 It helps make the system more objective than simple win-rate analysis and supports the project goal of AI-assisted game balance recommendations.
-message.txt
-7 KB
