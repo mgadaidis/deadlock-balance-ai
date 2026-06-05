@@ -38,6 +38,16 @@ This matches Section 3.6 of the proposal exactly.
 
 ---
 
+### Prerequisites
+
+Before running the project, make sure the device has the following installed:
+
+- Python 3.10 or newer
+- Node.js and npm
+- Git, if cloning from GitHub
+
+Python is required to run the FastAPI backend. Node.js and npm are required to run the React frontend.
+
 ## Quick start
 
 ### 1. Backend
