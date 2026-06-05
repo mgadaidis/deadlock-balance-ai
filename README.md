@@ -35,6 +35,7 @@ heroes with explainable rationales, and predicts team win probability.
 
 This matches Section 3.6 of the proposal exactly.
 
+
 ---
 
 ## Quick start
