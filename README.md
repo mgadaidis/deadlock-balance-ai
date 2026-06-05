@@ -5,7 +5,7 @@ fetches public match analytics from [deadlock-api.com](https://deadlock-api.com/
 computes per-hero performance metrics, surfaces overpowered and underpowered
 heroes with explainable rationales, and predicts team win probability.
 
-> Midterm project — authors: **Mia Giorgadze, Mikheil Gadaidis**.
+> Project — authors: **Mia Giorgadze, Mikheil Gadaidis**.
 
 ---
 
@@ -26,15 +26,14 @@ heroes with explainable rationales, and predicts team win probability.
   └──────────┬───────────────────────────────────┘
              │ JSON, /api/* (CORS, axios)
              ▼
-  ┌──────────────────────────────────────────────┐
-  │ React 18 + Vite frontend                     │
-  │  • Recharts visualisations                   │
-  │  • Pages: Dashboard, Heroes, Balance, Predict│
-  └──────────────────────────────────────────────┘
+  ┌─────────────────────────────────────────────────────────────────────────┐
+  │ React 18 + Vite frontend                                                │
+  │  • Recharts visualisations                                              │
+  │  • Pages: Overview, Simulator, Hero Recommendation, Item Recommendation |
+  └─────────────────────────────────────────────────────────────────────────┘
 ```
 
 This matches Section 3.6 of the proposal exactly.
-
 
 ---
 
@@ -71,7 +70,7 @@ stores them in `backend/deadlock.db`, and runs the balance analyser.
 
 ---
 
-## Endpoints (cheat-sheet)
+## Endpoints
 
 | Method | Path | Purpose |
 | ------ | ---- | ------- |
@@ -89,12 +88,42 @@ stores them in `backend/deadlock.db`, and runs the balance analyser.
 ## Repository layout
 
 ```
+```
 deadlock-balance-ai/
-├── backend/        FastAPI + pandas + scikit-learn + SQLite
-├── frontend/       React + Vite + Recharts + axios
-├── .gitignore
-├── LICENSE         MIT
-└── README.md       (this file)
+├── backend/                 FastAPI backend, data pipeline, ML models, SQLite cache
+│   ├── app/                 Main backend application code
+│   │   ├── data/            Item upgrade paths, archetypes, and data format files
+│   │   ├── ml/              Balance analyzer, simulator, Random Forest ML model
+│   │   └── routers/         API routes for heroes, balance, items, and prediction
+│   ├── scripts/             Optional data-fetching scripts
+│   ├── requirements.txt     Python dependencies
+│   └── .env.example         Example backend environment configuration
+│
+├── frontend/                React + Vite frontend
+│   ├── src/                 Main frontend source code
+│   │   ├── api/             Axios API client
+│   │   ├── components/      Reusable UI and chart components
+│   │   ├── contexts/        Shared item data context
+│   │   ├── pages/           Overview, Simulator, Hero Recs, Item Recs, Heroes
+│   │   └── theme/           Frontend color/theme helpers
+│   ├── package.json         Frontend dependencies and scripts
+│   └── vite.config.js       Vite configuration and backend proxy
+│
+├── docs/                    Project documentation and evidence
+│   ├── ML_MODEL.md          Machine learning model explanation
+│   ├── API_ENDPOINTS.md     Backend API endpoint documentation
+│   ├── DATA_PIPELINE.md     Data collection and preprocessing explanation
+│   ├── USER_GUIDE.md        User guide for the final app
+│   └── screenshots/         App and endpoint screenshots
+│
+├── TEAMWORK.md              Role distribution and collaboration strategy
+├── TESTING.md               Manual and automated testing checklist
+├── .gitignore               Ignored local/cache/build files
+├── LICENSE                  MIT license
+├── run-dev.sh               Optional helper script for running the app
+└── README.md                Main project overview and setup guide
+```
+
 ```
 
 See `backend/README.md` and `frontend/README.md` for module-level detail.
@@ -103,12 +132,11 @@ See `backend/README.md` and `frontend/README.md` for module-level detail.
 
 ## Scope
 
-In scope (per the proposal): hero-level analysis, win rate / pick rate / KDA /
+In scope: hero-level analysis, win rate / pick rate / KDA /
 damage, overpowered-vs-underpowered detection, win-probability prediction, a
 React dashboard.
 
-Out of scope: deep learning, live match tracking, item-level recommendations
-(may be added later as data permits), simulation of game mechanics.
+Out of scope: deep learning, live match tracking, simulation of game mechanics.
 
 ---
 
