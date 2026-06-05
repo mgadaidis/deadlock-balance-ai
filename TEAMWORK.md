@@ -139,7 +139,7 @@ Tasks were divided according to each member’s role.
 
 The team used Git and GitHub for version control.
 
-Due to the project architecture and deployment requirements, development and testing were initially performed within a single local network environment. As a result, the collaborative GitHub repository was created after the core implementation phase had been completed. The repository was subsequently used to organize project documentation, testing materials, screenshots, and final deliverables, while also providing a structured version control workflow.
+Development and testing were initially performed within a single local network environment. As a result, the collaborative GitHub repository was created after the core implementation phase had been completed. The repository was subsequently used to organize project documentation, testing materials, screenshots, and final deliverables, while also providing a structured version control workflow.
 
 The main branch contains the final stable version of the project. Work was separated into feature branches and merged through pull requests.
 
