@@ -152,7 +152,16 @@ The team used branches such as:
 
 Each feature branch focused on one specific task.
 
-Project milestones were preserved using Git tags and GitHub releases. Tagged versions were created to represent significant stages of development, allowing previous project states to be archived and referenced while maintaining the main branch as the latest stable version.
+The team also used GitHub Releases to archive earlier local prototype versions that were created before the final GitHub workflow was organized.
+
+Archived releases:
+
+- `v0.1-prototype` — early prototype archive
+- `v0.5-ml-integration` — development archive after ML/backend integration work
+- `v1.0-final` — final submitted version
+
+The final submitted version is marked with the annotated Git tag `v1.0-final`.
+
 
 ---
 
