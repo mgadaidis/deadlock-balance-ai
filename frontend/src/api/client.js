@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const client = axios.create({
   baseURL: '/api',
-  timeout: 90000,
+  timeout: 120000,
   headers: { 'Cache-Control': 'no-cache', Pragma: 'no-cache' },
 });
 
