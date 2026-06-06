@@ -49,7 +49,7 @@ The project does not use private developer data, individual player tracking, or 
 
 ## Refresh Flow
 
-When Refresh Data is clicked, the pipeline follows this process:
+When **Refresh Data** is clicked, the pipeline follows this process:
 
 1. Fetch hero metadata
 2. Fetch hero statistics
@@ -103,22 +103,40 @@ The pipeline calculates important hero statistics, including:
 ### Win Rate
 
 ```txt
-wins / matches
+win rate = wins / matches
 ```
+
+Win rate shows how often a hero wins compared to how many matches they appeared in.
+
+A high win rate can suggest overperformance, while a low win rate can suggest underperformance. However, win rate is not used alone because it can be misleading without context.
 
 ### Pick Rate
 
 ```txt
-hero matches / total hero matches
+pick rate = hero matches / total hero matches
 ```
+
+Pick rate shows how often a hero appears compared to all hero appearances.
+
+Pick rate helps show whether a hero is commonly used or only played in niche situations.
+
+For example:
+
+* high win rate + high pick rate = stronger overperformance signal
+* high win rate + low pick rate = possible niche/specialist hero
+* low win rate + high pick rate = popular but possibly weak hero
 
 ### KDA
 
 ```txt
-(kills + assists) / deaths
+KDA = (kills + assists) / deaths
 ```
 
-If deaths are zero, the backend avoids division by zero.
+KDA is used to measure combat performance.
+
+If deaths are zero, the backend avoids division by zero by using a safe fallback value.
+
+KDA is useful because two heroes may have similar win rates but very different combat impact.
 
 ---
 
@@ -149,6 +167,12 @@ Item categories include:
 
 ## Item Usage Rate
 
+Item usage rate shows how common an item is compared to all item-stat matches.
+
+```txt
+item usage rate = item matches / total item matches
+```
+
 Usage rate is important because win rate alone can be misleading.
 
 For example:
@@ -164,18 +188,140 @@ This makes item recommendations more realistic.
 
 ## Item Confidence
 
-Confidence shows how reliable an item result is.
+Confidence shows how reliable an item result is based on sample size.
 
 The system gives more trust to items with a larger sample size.
+
+```txt
+higher match count = higher confidence
+lower match count = lower confidence
+```
+
+This prevents the app from overreacting to small-sample win rates.
+
+For example, an item with 58% win rate over a small number of matches may be less reliable than an item with 52% win rate over thousands of matches.
+
+---
+
+## Mathematical and Statistical Logic
+
+The project uses several basic statistical formulas to convert raw match data into useful balance indicators.
+
+### Win Rate
+
+```txt
+win rate = wins / matches
+```
+
+Win rate is used for both heroes and items.
+
+It is one of the main indicators of performance, but it is not treated as the only proof of imbalance.
+
+### Pick Rate
+
+```txt
+pick rate = hero matches / total hero matches
+```
+
+Pick rate helps explain how popular or common a hero is.
+
+A hero with high win rate and high pick rate is usually a stronger balance concern than a hero with high win rate and very low pick rate.
+
+### KDA
+
+```txt
+KDA = (kills + assists) / deaths
+```
+
+KDA helps measure combat contribution.
+
+The backend handles zero deaths safely to avoid division errors.
+
+### Item Usage Rate
+
+```txt
+item usage rate = item matches / total item matches
+```
+
+Usage rate is used to understand whether an item is widely used or niche.
+
+This helps prevent bad conclusions such as calling a rarely used item overpowered only because it has a high win rate.
+
+### Confidence
+
+Confidence represents how reliable the result is.
+
+The app treats larger sample sizes as more reliable and smaller sample sizes as less reliable.
+
+This is important because small samples can produce misleading percentages.
+
+### Balance Thresholds
+
+The system uses win-rate thresholds to help classify heroes.
+
+```txt
+win rate above healthy range = overpowered signal
+win rate inside healthy range = balanced signal
+win rate below healthy range = underpowered signal
+```
+
+These thresholds are combined with other metrics such as pick rate, KDA, damage, net worth, anomaly signals, and ML baseline comparison.
+
+This makes the system more reliable than using win rate alone.
+
+### ML Gap
+
+The machine learning model predicts an expected win rate for each hero.
+
+The app compares the observed win rate with the ML expected win rate.
+
+```txt
+ML gap = observed win rate - ML expected win rate
+```
 
 Example:
 
 ```txt
-High matches = higher confidence
-Low matches = lower confidence
+Observed win rate: 56.1%
+ML expected win rate: 54.9%
+ML gap: +1.2 percentage points
 ```
 
-This prevents the app from overreacting to small-sample win rates.
+A positive gap means the hero is performing above the model’s expectation.
+
+A negative gap means the hero is performing below the model’s expectation.
+
+This helps the app decide whether the observed result is unusual compared to the hero’s overall statistical profile.
+
+### Snapshot Difference
+
+Meta Shift compares the latest data snapshot with the previous snapshot.
+
+```txt
+win rate change = current win rate - previous win rate
+pick rate change = current pick rate - previous pick rate
+```
+
+This helps identify heroes that are rising or falling in the current meta.
+
+### Simulator Logic
+
+The simulator combines multiple signals to estimate a win probability.
+
+It considers:
+
+* selected team heroes
+* enemy team heroes
+* hero win rates
+* ML baseline
+* item strength
+* item compatibility
+* build quality
+* early/mid/late phase signals
+
+The final output is a probability-style result rather than a guaranteed prediction.
+
+This means the simulator estimates which team has a stronger statistical position, but it does not claim to perfectly predict a real match.
 
 ---
 
