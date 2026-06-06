@@ -22,7 +22,7 @@ heroes with explainable rationales, and predicts team win probability.
   │ FastAPI backend (Python 3.10+)               │
   │  • httpx client → pandas normalisation       │
   │  • SQLAlchemy ORM → SQLite                   │
-  │  • scikit-learn (IsolationForest) analyser   │
+  │  • scikit-learn Random Forest models         │
   │  • REST endpoints: /heroes, /balance, …      │
   └──────────┬───────────────────────────────────┘
              │ JSON, /api/* (CORS, axios)
@@ -79,11 +79,11 @@ npm install
 npm run dev
 ```
 
-Open <http://127.0.0.1:5173>.
+Open <http://localhost:5173/>.
 
 ### 3. First data load
 
-On the Dashboard, click **Refresh data**. This calls `POST /refresh`, which
+On the Overview page, click **Refresh data**. This calls `POST /refresh`, which
 pulls heroes and aggregated stats from the Deadlock API, normalises them,
 stores them in `backend/deadlock.db`, and runs the balance analyser.
 
