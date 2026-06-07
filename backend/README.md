@@ -49,7 +49,7 @@ python scripts/fetch_data.py
 | `app/schemas.py` | Pydantic response/request schemas |
 | `app/deadlock_client.py` | Async HTTP client for the Deadlock API |
 | `app/data_pipeline.py` | Fetch → normalise (pandas) → persist → analyse |
-| `app/ml/balance_analyzer.py` | Threshold + IsolationForest balance verdicts |
+| `app/ml/balance_analyzer.py` | Threshold-based balance verdicts with Random Forest ML cross-check |
 | `app/ml/predictor.py` | Logistic win-probability predictor |
 | `app/routers/heroes.py` | `/heroes`, `/heroes/stats`, `/heroes/{id}/stats` |
 | `app/routers/balance.py` | `/balance/flags`, `/balance/summary` |
